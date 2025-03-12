@@ -1,0 +1,156 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passenger Invoice</title>
+
+    <style>
+
+        thead{
+            width: 100%;
+            display: block;
+        }
+        tbody {
+            width: 100%;
+            display: block;
+        }
+        tr{
+            width: 100%;
+        }
+        th, td {
+            width: 65px;
+        }
+        
+        .oddRow {
+            background: rgb(248, 248, 248);
+        }
+        .evenRow {
+            background: #fff;
+        }
+            
+    </style>
+
+</head>
+<body style="font-family: Helvetica, Calibri, Times New Roman, Lato, Verdana; width: 90%; max-width: 850px; margin: 0 auto;">
+    <h2 style="font-weight: bold; font-size: 29px; margin-bottom: 40px 0px;">Tax Invoice</h2>
+
+    <div style="font-size: 14px; margin-top: 50px; margin-bottom: 8px; font-weight: bold ;display: flex; align-items: start; justify-content: space-between;">
+
+        <div>
+            <p >Billed To</p>
+            <p><%= data[0].agent.firstName + " " + data[0].agent.lastName %></p>
+        </div>
+
+        <div style="line-height: 0.5rem; font-weight: normal; font-size: 12px;">
+            <p style="line-height: normal; font-size: 15px; font-weight: bold;">Invoice Details</p>
+            <p style="font-weight: bold;">Vat reg no : </p>
+            <p style="font-weight: bold;">Ducument No : <%= uniqueId %></p>
+            <p>Invoice Date :  <%= formattedDate %></p>
+            <p>Due Date : <%= formattedDate %></p>
+            <p>LPO No : </p>
+        </div>
+    </div>
+
+    <div style="font-size: 15px;">
+        <table style="border-collapse: collapse; width: 100%; display: flex; flex-direction: column;">
+            <thead style="width: 100%; font-size: 13px;  text-align: left;">
+                <tr style="background: #f7f7f7; margin: 10px 0px;">
+                    <th style="padding: .9rem;">SL NO</th>
+                    <th style="padding: .9rem; text-wrap: nowrap;">PASSENGER NAME</th>
+                    <th style="padding: .9rem;">PASSPORT</th>
+                    <th style="padding: .9rem;">COST</th>
+                    <th style="padding: .9rem;">TAX</th>
+                    <th style="padding: .9rem;">PROFIT</th>
+                    <th style="padding: .9rem;">TOTAL</th>
+                </tr>
+            </thead>
+    
+
+            <tbody style="padding: .9rem 0rem; font-size: 12px; text-align: left;">
+                <% data.map((result, index) =>{ %>
+                    <tr class="<%= index % 2 !== 0 ? 'oddRow' : 'evenRow'%>">
+                        <td style="padding: .7rem .9rem;"><%= index + 1%></td>
+                        <td style="padding: .7rem .9rem; text-wrap: nowrap;"><%= result.name %></td>
+                        <td style="padding:.7rem .9rem; text-wrap: nowrap;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <%= result.passport.number %></td>
+                        <td style="padding:.7rem .9rem;"><%= result.cost %></td>
+                        <td style="padding:.7rem .9rem;">0.00</td>
+                        <td style="padding:.7rem .9rem;"><%= result.sale - result.cost %></td>
+                        <td style="padding:.7rem .9rem;"><%= result.sale %>.00</td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+        <hr style="margin-bottom: -5px; border-color: #ffffff69;" >
+        <div>
+            <table style="border-collapse: collapse; width: 100%; margin-top: 10px;">
+                <thead>
+                    <tr style="font-size: 13px;  text-align: left;">
+                    
+                        <th style="padding: .9rem;">&nbsp; &nbsp; &nbsp; &nbsp;</th>
+                        <th style="padding: .9rem;">&nbsp; &nbsp;</th>
+                        <th style="padding: .9rem;">&nbsp;</th>
+                        <th style="padding: .9rem; text-wrap: nowrap;">Total before Vat :</th>
+                        <th style="padding: .9rem; text-align: right;"><%= totalCost %></th>
+                        <th style="padding: .9rem;">00.00</th>
+                        <th style="padding: .9rem;"><%= profit %></th>
+                        <th style="padding: .9rem;"><%= totalSale %></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr style="font-size: 13px;  text-align: left;">
+                        <td style="padding: .9rem 0rem;"></td>
+                        <td style="padding: .9rem 0rem;"></td>
+                        <td style="padding: .9rem 0rem"></td>
+                        <td style="padding: .9rem 0rem; text-wrap: nowrap; font-weight: bold;">Vat :</td>
+                        <td style="padding: 0rem .9rem;"></td>
+                        <td style="padding: 0rem .9rem;"></td>
+                        <td style="padding: 0rem .9rem; text-wrap: nowrap; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; 00.00</td>
+                    </tr>
+                    <tr style="font-size: 13px;  text-align: left;">
+                        <td style="padding: 0rem .9rem;"></td>
+                        <td style="padding: 0rem .9rem;"></td>
+                        <td style="padding: 0rem .9rem;"></td>
+                        <td style="font-size: 16px; font-weight: bold; margin-left: -18px; display: inline;">Total :</td>
+                        <td style="padding: 0rem .9rem;"></td>
+                        <td style="padding: 0rem .9rem;"></td>
+                        <td style="padding: 0rem .9rem; text-wrap: nowrap; font-weight: bold;">&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <%= totalSale %></td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+        <div style="width: 300px; margin-top: 35px;">
+
+            <p>Invoice Total in words</p>
+    
+            <p style="font-weight: 600; font-size: 14px;">Bangladeshi Taka <%= amountinWords  %> only</p>
+        </div>
+
+      
+    <hr style="margin-bottom: -12px;  border-color: #ffffff69;">
+
+    <div style="font-size: 18px; font-weight: bold; padding-right: 1.4rem;">
+        <p style="text-align: right;">Net Amount in BDT &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <%= totalSale %>.00</p>
+    </div>
+
+    <hr style="margin-top: -12px;  border-color: #ffffff69;">
+
+
+    <div style="display: flex; margin-top: -10px; justify-content: space-between; font-size: 13px; padding: 0rem 1.4rem;">
+        <p>Manager</p>
+        <p>Accountant</p>
+        <p>Prepared By</p>
+    </div>
+    <p style="text-align: right; padding: 0rem 1.4rem; font-size: 13px;">Admin</p>
+
+</body>
+
+</html>
